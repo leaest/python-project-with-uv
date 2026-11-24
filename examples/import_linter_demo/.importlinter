@@ -1,0 +1,9 @@
+[importlinter]
+root_package = shop
+
+[importlinter:contract:layers]
+name = The web layer sits on top of the domain layer
+type = layers
+layers =
+    shop.web
+    shop.domain

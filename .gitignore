@@ -1,0 +1,30 @@
+# virtual environments
+.venv/
+
+# tool caches
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.cache/
+
+# byte-compiled / optimized files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# coverage
+.coverage
+.coverage.*
+coverage.xml
+
+# distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# system files
+.DS_Store
+Thumbs.db
+
+# editor
+.ropeproject/

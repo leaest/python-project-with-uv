@@ -1,0 +1,105 @@
+[project]
+name = "CHANGE-ME"
+version = "0.1.0"
+description = "A minimal Python project template."
+requires-python = ">=3.15"
+# Runtime dependencies. Add them with `uv add <package>`.
+dependencies = []
+
+[project.scripts]
+change-me = "change_me.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.9,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv]
+# Skip releases younger than 3 weeks on each `uv lock`.
+exclude-newer = "3 weeks"
+
+[tool.uv.build-backend]
+module-name = "change_me" # the project name `CHANGE-ME` does not match it
+
+[dependency-groups]
+dev = [
+    # `~=X.Y.Z` allows patch updates only (>=X.Y.Z, <X.(Y+1)).
+    "debugpy~=1.8.22",
+    "pytest~=9.2.0",
+    "ruff~=0.17.3",
+    "basedpyright~=1.40.2",
+    "import-linter~=2.15.0",
+    "pytest-cov~=7.1.0",
+]
+
+[tool.ruff]
+line-length = 88
+extend-exclude = ["examples"] # the demos break the rules on purpose
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+# Turn on only the preview rules named by exact code (the DOC rules).
+preview = true
+explicit-preview-rules = true
+select = [
+    "E", # pycodestyle errors (PEP 8)
+    "F", # unused imports, undefined names
+    "I", # import ordering
+    "UP", # modernize to target Python
+    "B", # common bugs
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific rules
+    "N", # pep8-naming
+    "D", # pydocstyle (Google convention, see below)
+    "LOG", # issues using the standard library logging
+    "G", # logging format strings
+    "ANN", # require annotations on public APIs
+    "TC", # move type-only imports into `if TYPE_CHECKING:`
+    "TID252", # relative imports
+    "PLC0415", # imports inside functions
+    # Docstring matches the signature and the body (pydoclint)
+    "DOC102", "DOC201", "DOC202", "DOC402", "DOC403", "DOC501", "DOC502",
+    # Stricter than the Google convention
+    "D204", # 1 blank line after the class docstring
+    "D400", # first line ends with a period
+    "D401", # first line in imperative mood
+    "D404", # first word is not "This"
+    "D413", # blank line after the last section
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.basedpyright]
+typeCheckingMode = "recommended" # fails on warnings too
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--import-mode=importlib",
+    "--cov",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+]
+
+[tool.coverage.run]
+source = ["change_me"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 80
+exclude_also = ["if TYPE_CHECKING:"]
+
+[tool.importlinter]
+root_package = "change_me"
+
+[[tool.importlinter.contracts]]
+name = "The CLI layer sits on top of the core layer"
+type = "layers"
+layers = ["change_me.cli", "change_me.core"]
